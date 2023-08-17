@@ -6,8 +6,9 @@ Spring boot 2.7.14
 H2 DataBase
 # 데이터 설계
 ![스크린샷 2023-08-17 오후 3 01 48](https://github.com/jeonYoungBin/reservation/assets/137134782/8d9b49bf-be80-4b06-b408-747163e379df)
-# API 설명 
-<backoffice>
+# API 설명
+<br/>
+<backoffice><br/>
 1. POST /backoffice/add<br/>
    - 강연 등록(강연장,강연자,강연일시,강연내용 등을 requestBody로 받아 입력)<br/>
    - 강연 날짜 포맷은 YYYY-MM-DD HH:MM 포맷 일치 하지 않을시 exception 처리<br/>
