@@ -17,7 +17,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Getter @Setter
+@Getter
 public class Lecture extends Base {
     @Id @GeneratedValue
     @Column(name = "lecture_id")
@@ -59,6 +59,6 @@ public class Lecture extends Base {
         if(restApplicantsNum < 0) {
             throw new CustomExcepiton("신청 인원은 0이하가 될수 없습니다.");
         }
-        this.applicantsNum = this.applicantsNum - cnt;
+        this.applicantsNum = restApplicantsNum;
     }
 }

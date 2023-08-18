@@ -14,7 +14,7 @@ public class ExceptionAdvisorController {
 
     @ExceptionHandler(CustomExcepiton.class)
     Response processExceptionError(CustomExcepiton e) {
-        return new Response(206, e.getMessage(), null);
+        return new Response(Code.VALIDATE_ERROR_CODE, e.getMessage(), null);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -27,6 +27,6 @@ public class ExceptionAdvisorController {
     @ExceptionHandler(Exception.class)
     Response commonExceptionError(Exception e) {
         log.error("error msg {}", e.getMessage());
-        return new Response(Code.INTERNAL_SERVER_ERROR_CODE, Code.INTERNAL_SERVER_ERROR_MESSAGE ,null);
+        return new Response(Code.INTERNAL_SERVER_ERROR_CODE, e.getMessage() ,null);
     }
 }

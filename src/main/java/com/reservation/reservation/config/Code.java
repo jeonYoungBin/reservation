@@ -11,5 +11,4 @@ public final class Code {
     public static int VALIDATE_ERROR_CODE = 207;
     //기타 서버 에러
     public static int INTERNAL_SERVER_ERROR_CODE = 500;
-    public static String INTERNAL_SERVER_ERROR_MESSAGE = "INTERNAL_SERVER_ERROR_CODE";
 }

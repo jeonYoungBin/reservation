@@ -4,8 +4,8 @@ import com.reservation.reservation.config.Code;
 import com.reservation.reservation.domain.Lecture;
 import com.reservation.reservation.domain.LectureApplicant;
 import com.reservation.reservation.domain.response.Response;
-import com.reservation.reservation.service.LectureApplicantService;
-import com.reservation.reservation.service.LectureService;
+import com.reservation.reservation.service.Impl.LectureApplicantServiceImpl;
+import com.reservation.reservation.service.Impl.LectureServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/front")
 public class FrontController {
 
-    private final LectureApplicantService lectureApplicantService;
-    private final LectureService lectureService;
+    private final LectureApplicantServiceImpl lectureApplicantService;
+    private final LectureServiceImpl lectureService;
     /**
      * 강연 신청
      */
@@ -33,7 +33,7 @@ public class FrontController {
     /**
      * 강연 목록(신청 가능한 싯점부터 강연시작시간 1일 후까지 노출)
      */
-    @GetMapping("/findAll/posible/lecutre")
+    @GetMapping("/findAll/posible/lecture")
     Response lecutreFindPossible() {
         List<Lecture> posibleLecuture = lectureService.findPosibleLecuture();
         HashMap<String, Object> response = new HashMap<>();

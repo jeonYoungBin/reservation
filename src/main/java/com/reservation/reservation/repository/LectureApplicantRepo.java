@@ -1,8 +1,6 @@
 package com.reservation.reservation.repository;
 
-import com.reservation.reservation.domain.Lecture;
 import com.reservation.reservation.domain.LectureApplicant;
-import com.reservation.reservation.service.LectureService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

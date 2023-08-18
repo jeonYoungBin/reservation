@@ -7,7 +7,6 @@ import com.reservation.reservation.domain.request.LectureRequestDto;
 import com.reservation.reservation.domain.response.Response;
 import com.reservation.reservation.service.LectureApplicantService;
 import com.reservation.reservation.service.LectureService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
