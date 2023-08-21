@@ -1,5 +1,6 @@
 package com.reservation.reservation.service.Impl;
 
+import com.reservation.reservation.config.Code;
 import com.reservation.reservation.domain.Lecture;
 import com.reservation.reservation.domain.LectureApplicant;
 import com.reservation.reservation.exception.CustomExcepiton;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,15 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
      */
     @Override
     public LectureApplicant save(Long lecture_id, String personelNum) {
+        Optional<Lecture> lectureFindOne = Optional.ofNullable(lectureRepo.findOne(lecture_id));
+        if(lectureFindOne.isEmpty()) {
+            throw new CustomExcepiton("해당되는 강의가 없습니다.");
+        }
         boolean dupleApplicantCheck = lectureApplicantRepo.findDupleApplicantCheck(personelNum, lecture_id);
         if(!dupleApplicantCheck) {
             throw new CustomExcepiton("사번" + personelNum + " (은)는 이미 강연 신청이 완료되었습니다.");
         }
-        Lecture lectureFindOne = lectureRepo.findOne(lecture_id);
-        LectureApplicant createApplicant = LectureApplicant.createLectureApplicant(lectureFindOne, personelNum);
+        LectureApplicant createApplicant = LectureApplicant.createLectureApplicant(lectureFindOne.get(), personelNum);
         lectureApplicantRepo.save(createApplicant);
         return createApplicant;
     }
@@ -51,13 +56,15 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
      * 신청 내역 취소
      */
     @Override
-    public void remvoeApplicantMember(Long id) {
-        LectureApplicant deleteApplicantMember = lectureApplicantRepo.findOne(id);
-
+    public void removeApplicantMember(Long id) {
+        Optional<LectureApplicant> deleteApplicantMember = Optional.ofNullable(lectureApplicantRepo.findOne(id));
         /*applicatnts_num 1 감소*/
-        Long lectureId = deleteApplicantMember.getLecture().getId();
+        if(deleteApplicantMember.isEmpty()) {
+            throw new CustomExcepiton("해당 신청자가 없습니다.");
+        }
+        Long lectureId = deleteApplicantMember.get().getLecture().getId();
         Lecture one = lectureRepo.findOne(lectureId);
         one.minusApplicantNum(1);
-        lectureApplicantRepo.deleteApplicantMember(deleteApplicantMember);
+        lectureApplicantRepo.deleteApplicantMember(deleteApplicantMember.get());
     }
 }
