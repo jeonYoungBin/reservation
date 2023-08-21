@@ -19,6 +19,10 @@ import java.util.regex.Pattern;
 public class LectureServiceImpl implements LectureService {
     private final LectureRepo lectureRepo;
     static final String REGEXP_PATTERN_CHAR = "^[\\d]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9])$";
+    static final Long before7Days = 7L;
+    static final Long after1Days = 1L;
+    static final Long before3Days = 3L;
+
     /**
      * 강연 등록
      */
@@ -43,7 +47,7 @@ public class LectureServiceImpl implements LectureService {
      */
     public List<Lecture> findPopularLecuture() {
         LocalDateTime nowDateTime = LocalDateTime.now();
-        LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(3L);
+        LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(before3Days);
 
         return lectureRepo.findPopularLecture(nowDateTime, now3MinusDateTime);
     }
@@ -55,8 +59,8 @@ public class LectureServiceImpl implements LectureService {
         List<Lecture> lectures = lectureRepo.findAll();
         ArrayList<Lecture> response = new ArrayList<>();
         for (Lecture lecture : lectures) {
-            if(lecture.getLectureTime().minusDays(7L).isBefore(LocalDateTime.now()) &&
-                    lecture.getLectureTime().plusDays(1L).isAfter(LocalDateTime.now())) {
+            if(lecture.getLectureTime().minusDays(before7Days).isBefore(LocalDateTime.now()) &&
+                    lecture.getLectureTime().plusDays(after1Days).isAfter(LocalDateTime.now())) {
                 response.add(lecture);
             }
         }
