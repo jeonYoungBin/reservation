@@ -19,6 +19,7 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
     /**
      * 강연등록
      */
+    @Override
     public LectureApplicant save(Long lecture_id, String personelNum) {
         boolean dupleApplicantCheck = lectureApplicantRepo.findDupleApplicantCheck(personelNum, lecture_id);
         if(!dupleApplicantCheck) {
@@ -33,6 +34,7 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
     /**
      * 강연 목록(신청 가능한 싯점부터 강연시작시간 1일 후까지 노출)
      */
+    @Override
     public List<LectureApplicant> findAll() {
         return lectureApplicantRepo.findAll();
     }
@@ -40,6 +42,7 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
     /**
      * 신청 내역 조회
      */
+    @Override
     public List<LectureApplicant> findAllApplicantMember(String personelNum) {
         return lectureApplicantRepo.findAllApplicantMember(personelNum);
     }
@@ -47,6 +50,7 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
     /**
      * 신청 내역 취소
      */
+    @Override
     public void remvoeApplicantMember(Long id) {
         LectureApplicant deleteApplicantMember = lectureApplicantRepo.findOne(id);
 

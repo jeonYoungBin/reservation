@@ -26,6 +26,7 @@ public class LectureServiceImpl implements LectureService {
     /**
      * 강연 등록
      */
+    @Override
     public Lecture save(LectureRequestDto lectureRequestDto) {
         //날짜형식 체크 후 localDateTime으로 변환하여 DB insert
         LocalDateTime lecture_time = datePattern(lectureRequestDto.getLecture_time());
@@ -38,6 +39,7 @@ public class LectureServiceImpl implements LectureService {
     /**
      * 등록된 강연 모든 리스트 출력
      */
+    @Override
     public List<Lecture> findAll() {
         return lectureRepo.findAll();
     }
@@ -45,6 +47,7 @@ public class LectureServiceImpl implements LectureService {
     /**
      * 3일간 가장 신청이 많은 강의(내린 차순으로 정리)
      */
+    @Override
     public List<Lecture> findPopularLecuture() {
         LocalDateTime nowDateTime = LocalDateTime.now();
         LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(before3Days);
@@ -55,6 +58,7 @@ public class LectureServiceImpl implements LectureService {
     /**
      * 신청 가능한 강의(7일 전부터 1일 후까지 노출)
      */
+    @Override
     public List<Lecture> findPosibleLecuture() {
         List<Lecture> lectures = lectureRepo.findAll();
         ArrayList<Lecture> response = new ArrayList<>();
@@ -70,6 +74,7 @@ public class LectureServiceImpl implements LectureService {
     /**
      * 날짜 패턴 validation check 및 String -> DateTime 변환
      */
+    @Override
     public LocalDateTime datePattern(String lectureTime) throws CustomExcepiton {
         boolean matches = Pattern.matches(REGEXP_PATTERN_CHAR, lectureTime);
         if(!matches)
