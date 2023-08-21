@@ -31,7 +31,7 @@ public class LectureRepo {
         return em.find(Lecture.class, id);
     }
 
-    public List<Lecture> findCritiaAll(LocalDateTime nowDateTime, LocalDateTime nowMinusDateTime) {
+    public List<Lecture> findPopularLecture(LocalDateTime nowDateTime, LocalDateTime nowMinusDateTime) {
         return em.createQuery("select l from Lecture l where l.modifyDate > ?1 AND l.modifyDate <= ?2 order by l.applicantsNum desc", Lecture.class)
                 .setParameter(1, nowMinusDateTime)
                 .setParameter(2, nowDateTime)

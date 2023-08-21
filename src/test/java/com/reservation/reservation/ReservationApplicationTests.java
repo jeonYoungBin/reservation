@@ -43,7 +43,7 @@ class ReservationApplicationTests {
 	void 인기강연리스트() {
 		LocalDateTime nowDateTime = LocalDateTime.now();
 		LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(3L);
-		List<Lecture> popularAll = lectureRepo.findCritiaAll(nowDateTime, now3MinusDateTime);
+		List<Lecture> popularAll = lectureRepo.findPopularLecture(nowDateTime, now3MinusDateTime);
 		assertEquals(0, popularAll.size());
 	}
 
@@ -82,7 +82,7 @@ class ReservationApplicationTests {
 
 		//then
 		CustomExcepiton e = assertThrows(CustomExcepiton.class, () -> lectureApplicantService.save(saveLecture.getId(), "12345"));
-		assertThat(e.getMessage()).isEqualTo("사번" + personelNum + "(은)는 이미 강연 신청이 완료되었습니다.");
+		assertThat(e.getMessage()).isEqualTo("사번" + personelNum + " (은)는 이미 강연 신청이 완료되었습니다.");
 	}
 
 

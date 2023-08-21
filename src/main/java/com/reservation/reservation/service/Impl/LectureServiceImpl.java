@@ -45,7 +45,7 @@ public class LectureServiceImpl implements LectureService {
         LocalDateTime nowDateTime = LocalDateTime.now();
         LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(3L);
 
-        return lectureRepo.findCritiaAll(nowDateTime, now3MinusDateTime);
+        return lectureRepo.findPopularLecture(nowDateTime, now3MinusDateTime);
     }
 
     /**
