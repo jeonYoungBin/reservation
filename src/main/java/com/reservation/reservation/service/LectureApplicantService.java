@@ -22,5 +22,5 @@ public interface LectureApplicantService {
     /**
      * 신청 내역 취소
      */
-    void removeApplicantMember(Long id);
+    void cancelApplicantMember(Long id);
 }

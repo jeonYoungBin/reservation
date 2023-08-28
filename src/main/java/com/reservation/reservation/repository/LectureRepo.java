@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class LectureRepo {
                 .getResultList();
     }
 
-    public Lecture findOne(Long id) {
-        return em.find(Lecture.class, id);
+    public Lecture findOne(Long id, LockModeType lock) {
+        return em.find(Lecture.class, id, lock);
     }
 
     public List<Lecture> findPopularLecture(LocalDateTime nowDateTime, LocalDateTime nowMinusDateTime) {

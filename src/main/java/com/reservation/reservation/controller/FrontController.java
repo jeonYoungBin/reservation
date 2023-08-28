@@ -65,7 +65,7 @@ public class FrontController {
      */
     @DeleteMapping("/remove/applicant/{lectureApplicant_id}")
     Response lecureDelApplicant(@PathVariable Long lectureApplicant_id) {
-        lectureApplicantService.removeApplicantMember(lectureApplicant_id);
+        lectureApplicantService.cancelApplicantMember(lectureApplicant_id);
         return new Response(Code.OK_CODE, Code.OK_MSG, "delete Success");
     }
 

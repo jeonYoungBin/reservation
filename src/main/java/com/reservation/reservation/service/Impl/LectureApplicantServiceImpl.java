@@ -9,7 +9,10 @@ import com.reservation.reservation.repository.LectureRepo;
 import com.reservation.reservation.service.LectureApplicantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +25,10 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
      * 강연등록
      */
     @Override
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public LectureApplicant save(Long lecture_id, String personelNum) {
-        Optional<Lecture> lectureFindOne = Optional.ofNullable(lectureRepo.findOne(lecture_id));
+
+        Optional<Lecture> lectureFindOne = Optional.ofNullable(lectureRepo.findOne(lecture_id, LockModeType.PESSIMISTIC_WRITE));
         if(lectureFindOne.isEmpty()) {
             throw new CustomExcepiton("해당되는 강의가 없습니다.");
         }
@@ -56,14 +61,15 @@ public class LectureApplicantServiceImpl implements LectureApplicantService {
      * 신청 내역 취소
      */
     @Override
-    public void removeApplicantMember(Long id) {
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public void cancelApplicantMember(Long id) {
         Optional<LectureApplicant> deleteApplicantMember = Optional.ofNullable(lectureApplicantRepo.findOne(id));
         /*applicatnts_num 1 감소*/
         if(deleteApplicantMember.isEmpty()) {
             throw new CustomExcepiton("해당 신청자가 없습니다.");
         }
         Long lectureId = deleteApplicantMember.get().getLecture().getId();
-        Lecture one = lectureRepo.findOne(lectureId);
+        Lecture one = lectureRepo.findOne(lectureId, LockModeType.PESSIMISTIC_WRITE);
         one.minusApplicantNum(1);
         lectureApplicantRepo.deleteApplicantMember(deleteApplicantMember.get());
     }

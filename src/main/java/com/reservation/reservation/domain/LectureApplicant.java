@@ -18,7 +18,7 @@ public class LectureApplicant extends Base {
     //사번
     private String personelNum;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id")
     private Lecture lecture;
 
