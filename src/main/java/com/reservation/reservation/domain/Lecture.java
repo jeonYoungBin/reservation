@@ -33,6 +33,7 @@ public class Lecture extends Base {
     //강연 내용
     private String lectureContent;
     //수정 날짜(신청자가 count 될때마다 실시간으로 업데이트)
+
     @JsonIgnore
     @Column(name = "modify_time", nullable = false)
     private LocalDateTime modifyDate = LocalDateTime.now();

@@ -1,5 +1,8 @@
 server.port: 31002
 spring:
+  redis:
+    host: localhost
+    port: 6379
   datasource:
     url: jdbc:h2:tcp://localhost/~/jpashop
     username: sa
@@ -7,7 +10,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       show_sql: true
       format_sql: true

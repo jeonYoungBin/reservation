@@ -3,21 +3,40 @@ package com.reservation.reservation.service.Impl;
 import com.reservation.reservation.domain.Lecture;
 import com.reservation.reservation.domain.request.LectureRequestDto;
 import com.reservation.reservation.exception.CustomExcepiton;
-import com.reservation.reservation.repository.LectureRepo;
+import com.reservation.reservation.repository.LecturRepoJpa;
+//import com.reservation.reservation.repository.LectureRepo;
 import com.reservation.reservation.service.LectureService;
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.TableGenerator;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LectureServiceImpl implements LectureService {
-    private final LectureRepo lectureRepo;
+//    private final LectureRepo lectureRepo;
+
+    private final LecturRepoJpa lectureRepo;
+    private final RedissonClient redissonClient;
+    private static final int WAIT_TIME = 5;
+    private static final int LEASE_TIME = 5;
+    private static final String SEAT_LOCK = "seat_lock";
     static final String REGEXP_PATTERN_CHAR = "^[\\d]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-4]):(0[0-9]|[1-5][0-9])$";
     static final Long before7Days = 7L;
     static final Long after1Days = 1L;
@@ -52,7 +71,7 @@ public class LectureServiceImpl implements LectureService {
         LocalDateTime nowDateTime = LocalDateTime.now();
         LocalDateTime now3MinusDateTime = LocalDateTime.now().minusDays(before3Days);
 
-        return lectureRepo.findPopularLecture(nowDateTime, now3MinusDateTime);
+        return lectureRepo.findPopularLecture(now3MinusDateTime, nowDateTime);
     }
 
     /**
@@ -84,4 +103,24 @@ public class LectureServiceImpl implements LectureService {
         return LocalDateTime.parse(lectureTime, formatter);
     }
 
+    /*@Override
+    public void updateLikeCount() {
+        RLock lock = redissonClient.getLock(SEAT_LOCK);
+        try {
+            if(!(lock.tryLock(WAIT_TIME, LEASE_TIME, TimeUnit.SECONDS))) {
+                log.error("lock 획득 실패");
+                throw new RuntimeException("lock 획득 실패");
+            }
+            log.info("lock 획득 성공");
+            Optional<Lecture> testOne = lectureRepo.findOne(1L);
+            if(testOne.isPresent()) {
+                testOne.get().likeUpCount();
+            }
+            lectureRepo.saveAndFlush(testOne.get());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } finally {
+            lock.unlock();
+        }
+    }*/
 }

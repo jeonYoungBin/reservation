@@ -32,4 +32,6 @@ public interface LectureService {
      * 날짜 패턴 validation check 및 String -> DateTime 변환
      */
     LocalDateTime datePattern(String lectureTime);
+
+//    void updateLikeCount();
 }
